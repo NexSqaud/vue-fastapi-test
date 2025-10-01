@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    networks:
+      - app-network
+
+  proxy:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: proxy
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
